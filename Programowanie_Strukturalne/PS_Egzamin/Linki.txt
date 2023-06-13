@@ -1,0 +1,7 @@
+https://en.wikipedia.org/wiki/C_data_types - typy danych w C
+https://github.com/pjastr/ProgramowanieStrukturalne2022 - kod z wykładów
+http://wmii.uwm.edu.pl/~piojas/index.php/2022/01/27/programowanie-strukturalne-wyklad-sem-letni-2021-22/ - slajdy z wykładów
+https://github.com/wcaleniepodejrzanerepo/zbior_krzaczkowski
+https://github.com/Bochnovic4/PS164344 - bochnowic
+https://commons.wikimedia.org/wiki/File:ASCII-Table.svg - Tablica znakow ASCII
+https://github.com/Malffy/PS164418/tree/main/PS_Pop_Kol1 - Kolos nr 1

@@ -1,0 +1,5 @@
+Zmienna wskaźnikowa przechowuje adres (int *x)
+Te adresy mają swoje adresy w pamięci
+Operacja np. int temp=*x mowi weź wartość stojącą na tym adresie i przypisz do zmiennej temp
+Operacja np. *x=*y mowi weź wartość stojącą na adresie x i przypisz ją dla wartości stojącej na adresie y
+Operacja np. *y=temp mowi weź wartość stojąca na adresie y i przypisz ją dla zmiennej temp

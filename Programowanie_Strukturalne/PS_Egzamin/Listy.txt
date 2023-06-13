@@ -1,0 +1,7 @@
+https://github.com/pjastr/Listy  - listy
+https://gist.github.com/pjastr/2cd0d6fd27b064151384d0f0b87b33e0 - lista bez głowy przez funkcje
+https://gist.github.com/pjastr/c4623127a08d172c3304af4ae34093eb - lista bez głowy w mainie
+https://gist.github.com/pjastr/49205101fde486d55105eace93243f31 - lista bez głowy przez funkcje z podwojnym wskaznikiem
+https://gist.github.com/pjastr/239641b4286caa767cccbea8e860e6bf - tworzenie listy z głową
+https://gist.github.com/pjastr/5cb344a75e93036183c36328272c1143 - lista z głową przez funkcję
+
