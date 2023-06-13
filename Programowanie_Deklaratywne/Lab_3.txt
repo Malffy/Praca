@@ -1,0 +1,18 @@
+PL06-Porownywanie_i_unifikacja_termow
+Unifikacja_termow - przyklady
+Sprawdzanie czy termy mozna ze sobą uzgodnić: = ,np
+?- fu(a,X,f(g(Y)))=fu(V,h(Z,V),f(V)). - false
+?- fu(a,X,f(g(Y)))=fu(Y,f(Z),f(Z)). - X=f(g(a)),Y=a,Z=g(a)
+?- fu(f(X),Y,a)=fu(f(g(Y)),c,Z). - X=g(c), Y=c, Z=a
+PL07_Mechanizm_wnioskowania_prologu
+Na kolokwium drzewo poszukiwania rozwiązania - narysować.(2/6)
+Program:
+% Dziadek
+/*1*/ojciec(karol,jan).
+/*2*/ojciec(karol,adam).
+/*3*/dziecko(tomasz,jan).
+/*4*/dziecko(piotr,adam).
+/*5*/dziadek(karol,marek).
+/*6*/dziadek(X,Y):-ojciec(X,Z), dziecko(Y,Z).
+trace.
+dziadek(X,piotr).

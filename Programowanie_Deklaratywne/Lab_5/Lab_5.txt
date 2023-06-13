@@ -1,0 +1,20 @@
+Program_1:
+?-wielomian(x,x).
+?-wielomian(2,x).
+?-wielomian(2*x,x).
+?-wielomian(2*x+x,x).
+?-wielomian(x^3,x).
+?-wielomian(y^3+y,y).
+?-wielomian(x^(-3),x).
+Program_2:
+Ile wynosi stopień wielomianu x zmiennej x.
+?-st_wielomian(x,x,Y).
+Ile wynosi stopień wielomianu 2 zmiennej x.
+?-st_wielomian(2,x,Y).
+Ile wynosi stopień wielomianu x^2+x zmiennej x.
+?-st_wielomian(x^2+x,x,Y).
+Ile wynosi stopień wielomianu (x^2)^2 zmiennej x.
+?-st_wielomian((x^2)^2,x,Y).
+Ile wynosi stopień wielomianu x*(x^2) zmiennej x.
+?-st_wielomian(x*(x^2),x,Y).
+

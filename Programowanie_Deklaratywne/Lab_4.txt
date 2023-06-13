@@ -1,0 +1,27 @@
+p(a,d).
+p(X,Y):-q(X,Z),r(Z,Y).
+q(a,b).
+q(c,a).
+r(a,d).
+r(b,c).
+Przedstaw drzewa poszukiwania rozwiązań dla celów: p(a,c),p(a,X),p(X,d),p(X,Y).
+Zweryfikuj narysowane drzewa korzystajac z predtykatu trace 0.
+Zdjecia zrobione.
+
+
+na(d,c).
+na(c,a).
+na(c,d).
+na(a,e).
+na(b,g).
+?-nad(g,_).
+
+Baza wiedzy RODZINA
+przodek(X,Y):-rodzic(X,Y).
+przodek(X,Y):-rodzic(X,Z),przodek(Z,Y).
+
+signum(X,-1):-X<0,!.
+signum(X,0):-X=0,!.
+signum(X,1):-X>0,!.
+Wykrzynik to predykat odcięcia to znaczy że jeżeli rozwiązanie zostanie znalezione, to inne
+nie będą szukane.

@@ -1,0 +1,8 @@
+1.stała,zmienna,term złożony, ewentualnie wyrażenie nie poprawne
+wypisane kilka, napisać czym będzie
+2.Napisać kilka stwierdzen faktów, i reguł i będzie trzeba
+dodać z ilu cech składa się program, ile reguł faktów ile definicji relacji
+3.Drzewo poszukiwania rozwiazania, podkreslić je.
+4.Unifikacja termów i list
+5-6. Dwa programy list jeden przy pomocy definicji rekurencyjnej 
+a drugi napisać za pomocą maplist

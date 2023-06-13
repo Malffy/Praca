@@ -1,0 +1,4 @@
+liczba_elem([],[]).
+liczba_elem([_|T1],N):-
+liczba_elem(T1,X),
+N is X+1.

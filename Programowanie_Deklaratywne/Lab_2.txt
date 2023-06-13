@@ -1,0 +1,80 @@
+Czy kloek d leży na klocku a: na(d,a).
+Jaki klocek lezy na klocku c: na(c,X).
+Jednoczesnie na a i b to: na(X,a),na(X,b).
+Stała zaczyna się z małej litery.
+% - komentarz
+, - to koniunkcja
+; - migajacy kursos (mechanizm wnioskowanie jeszcze sie nie zakończył).
+pod(X,Y)- klocek X leży bezpośrednio pod klockiem Y : pod(X,Y):-na(Y,X) (File->Edit->File->Consult).
+Czy klocek a leży pod klockiem c: pod(a,c).
+Jaki klocek leży pod klockiem c: pod(c,X).
+_ - zmienna anonimowa, używamy jeżeli wartość obiektu nie ma znaczenie i chcemy sie dowiedzieć jaką spełnia relacje.
+miedzy(X,Y,Z) - klocek X leży pomiędzy klockami Y i Z:
+Pierwsza reguła: miedzy(X,Y,Z):-na(X,Y),pod(X,Z).
+Druga reguła: miedzy(X,Y,Z):-na(X,Z),pod(X,Y).
+Jakie klocki leży pomiędzy klockiem c: miedzy(c,Y,Z).
+Jaki klocek leży pomiędzy klockami a i b: miedzy(X,a,d).
+UWAGA KOLOS Pierwsze zadanie:
+Napisz z ilu klauzul składa się program(6),
+ile definicji relacji(3-na,pod,miedzy), 
+ile faktów(3 pierwsze), ile reguł(3 ostatnie).
+
+ZADANIA.4
+% lubi(X,Y) - X lubi Y
+% jarosz(X) - X jest jaroszem
+% nie_pali(X) - X nie pali papierosow
+% czyta(X) - X lubi czytac ksiazki
+% sport(X) - X uprawia sport
+C.D.
+jarosz(ola).
+jarosz(ewa).
+jarosz(jan).
+jarosz(paweł).
+nie_pali(ola).
+nie_pali(ewa).
+nie_pali(jan).
+czyta(ola).
+czyta(iza).
+czyta(piotr).
+sport(ola).
+sport(jan).
+sport(piotr).
+sport(pawel).
+lubi(ola,Y):-jarosz(Y),sport(Y).
+lubi(ewa,Y):-nie_pali(Y),jarosz(Y).
+lubi(iza,Y):-czyta(Y).
+lubi(iza,Y):-sport(Y),nie_pali(Y).
+lubi(jan,Y):-sport(Y).
+lubi(piotr,Y):-sport(Y),jarosz(Y).
+lubi(piotr,Y):-czyta(Y).
+lubi(pawel,Y):-jarosz(Y),sport(Y),czyta(Y).
+Które osoby się nawzajem lubią: (cel) ?- lubi(X,Y),lubi(Y,X) + ,X\=Y(zeby nie bylo ze ola lubi ole).
+
+ZADANIE.1
+lubi(jan,tatry).
+lubi(jan,beskidy).
+lubi(jerzy,beskidy).
+lubi(jerzy,bieszczady).
+lubi(adam,sudety).
+lubi(justyna, bieszczady).
+bratnia_dusza(X,Y):-lubi(X,G),lubi(Y,G),X\==Y.
+a)7 - klauzul
+b)pierwsze 6 klauzul to fakty, ostatnia klauzula to reguła.
+d)2- definicje relacji(lubi,bratnia_dusza)
+4.Czy Jan na bratnią dusze: bratnia_dusza(jan,_).
+6.Jakie pary osób są swoimi bratnimi duszami: bratnia_dusza(X,Y).
+7.Wyznacz kto jednoczesnie lubi beskidy i tatry: lubi(X,beskidy),lubi(X,tatry).
+
+
+
+
+
+
+
+
+
+
+
+
+
+

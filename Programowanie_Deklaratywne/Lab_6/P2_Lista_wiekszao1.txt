@@ -1,0 +1,4 @@
+lista_wiekszao1([],[]).
+lista_wiekszao1([H1|T1],[H2|T2]):-
+H2 is H1+1,
+lista_wiekszao1(T1,T2).

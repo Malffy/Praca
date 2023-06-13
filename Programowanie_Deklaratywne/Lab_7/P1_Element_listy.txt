@@ -1,0 +1,7 @@
+%element(E,L)
+%spełniony, gdy E jest elementem listy L
+%-----------------------------------------------
+%warunek kończący rekurencj: głowa listy jest elementem listy
+element(E,[E|_]).
+%rekurencja: jeżeli E jest elementem listy L, a nie jest jej głową, to jest elementem ogona
+element(E,[_|T]):-element(E,T).

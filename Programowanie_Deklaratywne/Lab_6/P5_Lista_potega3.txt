@@ -1,0 +1,4 @@
+lista_potega3([],[]).
+lista_potega3([H1|T1],[H2|T2]):-
+H2 is H1*H1*H1,
+lista_potega3(T1,T2).

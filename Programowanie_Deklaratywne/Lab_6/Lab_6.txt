@@ -1,0 +1,28 @@
+Kolos tydzień po świetach.
+Zadanie kolos (4/6).
+Uzgadnianie list i krótki opis czemu da lub nie da sie uzgodnić.
+[[a,b],c] [X|T]
+X=[a,b] T=[C], da się uzgodnić.
+[X,Y|T] [[a,b]], tych list nie da się uzgodnić bo druga list jest dwu elementowa i nie ma co podstawić za Y.
+[g(Z),f(a),X] [X,Z,g(Y)]
+X=g(f(a)), Z=f(a), Y=f(a), da się uzgodnić.
+[Z, f(g(X)),a] [g(X),f(g(b)),Z]
+Z=g(b), X=b, a i g(b) nie da się uzgodnić.
+Tego typu zadanie z list będzie na kolosie (5/6).
+Kwadrat_listy:
+?-kwadrat_listy([1,2,3],[1,4,9]).
+?-kwadrat_listy([2,4],[5,9]).
+?-kwadrat_listy([2,5,7],X).
+Podwojenie_listy:
+?-podwojenie([a,b],[a,a,b,b]).
+?-podowojenie([1,2,3],X).
+Lista_wieszao1:
+?-lista_wiekszao1([2,4,5],[3,5,6]).
+?-lista_wiekszao1([2,6],X).
+Lista_razy3:
+?-lista_razy3([2,5][6,15]).
+?-lista_razy3([5,10,15],X).
+Lista_elem:
+?-lista_elem([2,4],2).
+?-lista_elem([1,2,3,4],X).
+https://ai.ia.agh.edu.pl/pl:prolog:prolog_lab:listy1

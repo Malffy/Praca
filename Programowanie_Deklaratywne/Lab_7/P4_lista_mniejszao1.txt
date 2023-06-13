@@ -1,0 +1,2 @@
+mniejszy(X,Y):-Y is X-1.
+mniejsza_lista(L1,L2):-maplist(mniejszy,L1,L2).

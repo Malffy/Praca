@@ -1,0 +1,4 @@
+konkat([],L,L).
+konkat([H|T1],L,[H|T2]):-konkat(T1,L,T2).
+odwrotna_lista([],[]).
+odwrotna_lista([H|T1],L):-odwrotna_lista(T1,T2),konkat(T2,[H],L).
