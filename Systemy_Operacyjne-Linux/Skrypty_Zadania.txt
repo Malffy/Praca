@@ -1,0 +1,790 @@
+Lab_6 <<<<<======================================================================================
+
+Zadania dla IF:
+
+1. Utwórz dwie zmienne i przypisz do nich liczby, sprawdzić która z nich jest mniejsza.
+zmienna1=10
+zmienna2=20
+ if [ $zmienna1 -eq $zmienna2 ]; then echo zmienna1=zmienna2; elif [ $zmienna1 -lt  $zmienna2 ];
+then echo zmienna1 mniejsza od zmniennej2; else echo zmienna1 większa od zmiennej2; fi
+zmienna1 mniejsza od zmniennej2
+
+2.Sprawdź czy w katalogu domowym jest plik zwykły „dane.txt”.
+if [ -f ~/dane.txt ]; then echo istnieje plik zwykły; else echo nie istnieje; fi
+istnieje plik zwykły
+
+3.. Utwórz zmienną, sprawdź, czy zmienna zawiera łańcuch niezerowy.
+zmienna="costam"
+if [ -n "$zmienna" ]; then echo niezerowy; else echo zerowy; fi
+niezerowy
+
+4. Sprawdź czy bieżącym katalogiem jest katalog domowy.
+if [ "$HOME" = "$PWD" ]; then echo to katalog domowy; else echo to nie jest katalog domowy; fi
+to katalog domowy
+
+Zadania dla CASE:
+a)Utwórz zamienną powłoki i przypisz do niej dowolny ciąg znaków. Następnie utwórz
+konstrukcję, która sprawdzi, czy wpisany tekst to:
+• lista – jeżeli tak to ma się wykonać polecenie ls,
+•drzewo lub las – to wypisz komunikat „Wybrano opcje nr 2” oraz wykonaj polecenie tree,
+• gdzie ja jestem – to wyświetl nazwę bieżącego katalogu,
+• domyślnie komunikat „Inna opcja” oraz swój login.
+tekst="a b c"
+case "$tekst" in
+"lista") ls;;
+"drzewo" | "las") echo Wybrano opcję nr 2; tree;;
+"gdzie ja jestem") pwd;;
+*) echo Inna opcja; whoami;;
+esac
+Inna opcja
+ODP:s164419
+
+b) Sprawdź działanie skryptu dla wszystkich dostępnych opcji:
+tekst="lista"
+case "$tekst" in "lista") ls;; "drzewo" | "las") echo Wybrano opcję nr 2; tree;; "gdzie ja jestem") pwd;; *) echo Inna opcja; whoami;; esac
+ODP:dane.txt  tekst24.03
+
+tekst="drzewo"
+case "$tekst" in "lista") ls;; "drzewo" | "las") echo Wybrano opcję nr 2; tree;; "gdzie ja jestem") pwd;; *) echo Inna opcja; whoami;; esac
+ODP:Wybrano opcję nr 2
+
+
+case "$tekst" in "lista") ls;; "drzewo" | "las") echo Wybrano opcję nr 2; tree;; "gdzie ja jestem") pwd;; *) echo Inna opcja; whoami;; esac
+ODP:/home/domena/s164419
+
+tekst="a b c"
+case "$tekst" in "lista") ls;; "drzewo" | "las") echo Wybrano opcję nr 2; tree;; "gdzie ja jestem") pwd;; *) echo Inna opcja; whoami;; esac
+ODP:Inna opcja
+
+
+Zad.1 Napisz konstrukcje wykorzystujące pętle: while, until – które będą wyświetlały wartości
+liczb całkowitych od 10 do 35 i odwrotnie.
+x=10
+while [ $x -le 35 ]
+do
+echo $x
+x=$[$x+1]
+done
+while [ $x -ge 10 ]; do echo $x; x=$[$x-1]; done
+
+x=10
+until [ $x -gt 35 ]
+do
+echo $x
+x=$[$x+1]
+done
+until [ $x -lt 10 ]; do echo $x; x=$[$x-1]; done
+
+2. Policz – ile jest podkatalogów w bieżącym katalogu oraz wyświetl ich nazwy.
+ileKAT=0
+for x in *; do if [ -d "$x" ]; then ileKAT=$[$ileKAT+1]; echo "$x"; fi; done
+echo $ileKAT
+
+3.Napisz konstrukcję, która policzy:
+a)Ile jest plików w bieżącym katalogu o nazwach zaczynających się na literę „a”.
+ilePL=0
+for x in *; do if [ "$x" = "a"* ]; then ilePL=$[$ilePL+1]; fi; done
+echo $ilePL
+
+b)Ile jest plików w katalogu domowym o nazwach 6-znakowych, gdzie trzecim
+znakiem jest 'a'.
+ilePL=0
+for x in $(ls ~); do if [ "$x" = ??"a"??? ]; then ilePL=$[$ilePL+1]; fi; done
+echo $ilePL
+
+4.Wyświetl nazwy wszystkich plików mających ustawione prawa dostępu x.
+for x in *; do if [ -x "$x" ]; then echo $x; fi; done
+
+5.Napisz polecenie, które w katalogu domowym policzy, ile jest:
+
+a)plików zwykłych
+
+ilePL=0
+for x in $(ls ~); do if [ -f "$x" ]; then ilePL=$[$ilePL+1]; fi; done
+echo $ilePL
+
+b)podkatalogów
+
+ileKAT=0
+for x in $(ls ~); do if [ -d "$x" ]; then ileKAT=$[$ileKAT+1]; fi; done
+echo $ileKAT
+
+c)plików zerowych
+
+ileNZ=0
+for x in $(ls ~); do if [ ! -s "$x" ]; then ileNZ=$[$ileNZ+1]; fi; done
+echo $ileNZ
+
+6.Wyświetl TYLKO loginy i adresyIP obecnie zalogowany użytkowników.
+a. Przydatne polecenia who, cut, tr -s
+for x in "$(who | tr -s " ")"; do echo "$x" | cut -d " " -f 1,5; done
+
+
+Lab_7 <<<<<======================================================================================
+1. Skrypt wywołuje funkcję, która na zmiennych lokalnych oblicza sumę i iloczyn wartości
+przekazanych do niej jako parametry funkcji - tryb wsadowy, następnie obliczone wartości
+przekazuje do skryptu głównego. Wartości do skryptu też przekazuje się jako parametry - tryb
+wsadowy
+
+nano skrypt
+
+#!/bin/bash
+fun(){
+local sum=0
+local ilo=1
+for x in $@
+do
+sum=$[$sum+$x]
+ilo=$[$ilo*$x]
+done
+echo "SUMA:"  $sum
+echo "ILOCZYN:" $ilo
+}
+echo "SKRYPT GŁÓWNY"
+echo $*
+fun $@
+echo "KONIEC"
+
+chmod 777 skrypt
+./skrypt 1 2 3 4 5
+SKRYPT GŁÓWNY
+1 2 3 4 5
+SUMA: 15
+ILOCZYN: 120
+KONIEC
+
+2. Napisz skrypt, który pobiera 2 parametry – pierwszy – opcja wyboru (jedna z trzech), drugi –
+nazwa pliku albo katalogu. Skrypt w zależności od wartości pierwszego parametru:
+• jeżeli 1 – to sprawdza czy istnieje katalog o nazwie podanej jako drugi parametr,
+jeżeli istnieje to go usuwa, jeżeli nie - to go tworzy;
+• jeżeli 2 – zapisuje do pliku o nazwie podanej jako drugi parametr wartość zmiennej
+$HOME
+• jeżeli 3 – komunikat - „FUNKCJA 3” wywołuje odpowiednią funkcję i przekazuje jej
+odpowiednie wartości.
+
+nano skrypt
+
+fun3(){
+echo $1
+}
+echo "SKRYPT GŁÓWNY"
+if [ $1 -eq 1 ]; then
+if [ -d "$2" ]; then
+rmdir "$2"
+else mkdir "$2"
+fi
+elif [ $1 -eq 2 ]; then
+echo $HOME >> $2
+elif [ $1 -eq 3 ]; then
+echo "FUNKCJA 3"
+fun3 $2
+fi
+echo "KONIEC"
+
+
+lab 7_1_cd <<<<<======================================================================================
+
+1. Dla ścieżki „/home/jan23/Dane/Projekt_22/Dane/Pliki” :
+• wytnij część do podkatalogu „Dane” pierwszego od lewej, resztę przypisz do zmiennej a;
+• wytnij część do podkatalogu „Dane” pierwszego od prawej, resztę przypisz do zmiennej a;
+• zostaw część do podkatalogu „Dane” pierwszego od lewej i przypisz do zmiennej a, resztę
+wytnij;
+• zostaw część do podkatalogu „Dane” pierwszego od prawej i przypisz do zmiennej a, resztę
+wytnij;
+• ustal długość łańcucha opisującego ścieżkę;
+• do zmiennej b przypisz wartość domyślną – ścieżkę dostępu do katalogu domowego.
+
+ x="/home/jan23/Dane/Projekt_22/Dane/Pliki"
+
+a=${x#*Dane}
+echo $a
+/Projekt_22/Dane/Pliki
+
+a=${x##*Dane}
+echo $a
+/Pliki
+
+a=${x%Dane*}
+echo $a
+/home/jan23/Dane/Projekt_22/
+
+a=${x%%Dane*}
+echo $a
+/home/jan23/
+
+echo ${#x}
+38
+
+b=${b:-$HOME}
+echo $b
+/home/domena/s164419
+
+2. Mamy zmienną: SCIEZKA=/Kopia/Kopia/Kopia/Kopia/Pliki
+• Do zmienne ZAPAS przypisz łańcuch od trzeciego wystąpienia słowa "Kopia" od lewej
+strony (włącznie) do końca
+
+SCIEZKA="/Kopia/Kopia/Kopia/Kopia/Pliki"
+ZAPAS=${SCIEZKA#/Kopia/Kopia}
+echo $ZAPAS
+/Kopia/Kopia/Pliki
+
+3. Napisz skrypty, który zawierają:
+• funkcję, która zawiera zmienną lokalną zm1, której nadaje wartość 11, potem do ją dodaje do
+zmiennej globalnej bb1, skrypt zawiera zmienne: zm1 z nadaną wartością 33 i bb1 z wartością7;
+• funkcję, która wyświetla pobrane parametry, skrypt główny wczytuje przy uruchamianiu trzy
+parametry, dwa ostatnie z nich przekazuje do funkcji, oprócz tego przekazuje dwie liczby: 122i 34;
+• funkcję wczytującą dwie wartości – liczby i obliczającą ich sumę, funkcja przekazuje wartość
+sumy do skryptu głównego.
+
+•nano skrypt
+
+#!/bin/bash
+fun(){
+local zm1=11
+bb1=$[$bb1+$zm1]
+}
+zm1=33
+bb1=7
+echo "SKRYPT GŁÓWNY"
+echo $bb1
+fun
+echo $bb1
+echo "KONIEC"
+exit 0
+
+chmod 777 skrypt
+./skrypt
+SKRYPT GŁÓWNY
+7
+18
+KONIEC
+
+•nano skrypt
+
+#!/bin/bash
+fun(){
+echo "$*"
+}
+echo "SKRYPT GŁÓWNY"
+fun  "$2" "$3" 122 34
+echo "KONIEC"
+exit 0
+
+s164419@orfi:~$ chmod 777 skrypt
+s164419@orfi:~$ ./skrypt AAA BBB CCC
+SKRYPT GŁÓWNY
+BBB CCC 122 34
+KONIEC
+
+•nano skrypt
+
+#!/bin/bash
+fun(){
+suma=$[$1+$2]
+echo "suma=" $suma
+}
+echo "SKRYPT GŁÓWNY"
+fun $1 $2
+echo "KONIEC"
+exit 0
+
+chmod 777 skrypt
+./skrypt 5 5
+SKRYPT GŁÓWNY
+suma= 10
+KONIEC
+
+4. Utwórz skrypt zawierający polecenia: wyświetl ścieżkę dostępu do katalogu bieżącego, zapisz ją
+do zmiennej a, do zmiennej b zapisz – ile zwykłych plików zawiera katalog domowy. Skrypt
+wczytuje wartość – jeżeli wczytał:
+• 1 - ma utworzyć na nowo plik o nazwie „Dane”, do którego zapisze strukturę katalogu
+domowego,
+• 2- ma policzyć podkatalogi w katalogu domowym do podpoziomu 3
+• 3- ma wyświetlić zawartość katalogu domowego.
+Do diagnostyki skryptu użyj debuggera.
+
+nano skrypt
+
+#!/bin/bash -x
+echo "SKRYPT GŁÓWNY"
+echo $PWD
+a=$PWD
+echo "a=" $a
+b=$(find ~ -type f | wc -l)
+echo "b=" $b
+if [ $1 -eq 1 ]; then
+tree ~ > Dane
+elif [ $1 -eq 2 ]; then
+find ~ -maxdepth 3 -type d | wc -l
+elif [ $1 -eq 3 ]; then
+ls ~
+fi
+echo "KONIEC"
+exit 0
+
+chmod 777 skrypt
+
+./skrypt 3
++ echo 'SKRYPT GŁÓWNY'
+SKRYPT GŁÓWNY
++ echo /home/domena/s164419
+/home/domena/s164419
++ a=/home/domena/s164419
++ echo a= /home/domena/s164419
+a= /home/domena/s164419
+++ find /home/domena/s164419 -type f
+++ wc -l
++ b=12
++ echo b= 12
+b= 12
++ '[' 3 -eq 1 ']'
++ '[' 3 -eq 2 ']'
++ '[' 3 -eq 3 ']'
++ ls /home/domena/s164419
+Dane  silnia  skrypt
++ echo KONIEC
+KONIEC
++ exit 0
+
+
+Lab_8 <<<<<======================================================================================
+
+                                        ZAD.1
+Napisz skrypt, który pobiera pewną ilość parametrów w momencie uruchomienia. Skrypt
+ma:
+-sprawdzić czy wśród wczytanych parametrów jest wartość "las".
+-sprawdzić czy wśród parametrów jest wartość „a1” - jeżeli tak – skrypt ma policzyć
+ilość zwykłych plików w katalogu domowym.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+for x in $@;
+do
+if [ "$x" = "a1" ]
+then find ~ -type f | wc -l
+fi
+if [ "$x" = "las" ];
+then echo "występuje las"
+fi
+done
+echo "KONIEC SKRYPTU"
+exit 0
+chmod 777 skrypt
+./skrypt cos las a1 123
+SKRYPT GŁÓWNY
+występuje las
+
+KONIEC SKRYPTU
+----------------------------------------------------------------------------------------------------------------
+                                        ZAD.2
+Utwórz skrypt, który jest uruchamiany z parametrami.
+-Jeżeli ilość parametrów jest mniejsza niż 3 – komunikat „Za malo” i zakończenie z
+kodem 11.
+-Jeżeli równa 3 – to skrypt tworzy plik o nazwie podanej jako drugi parametr, do
+którego zapisuje zawartość katalogu domowego i kończy pracę z kodem 55.
+-Jeżeli parametrów jest więcej niż 3 – to skrypt podlicza, ile jest podkatalogów do 3
+poziomu zagłębienia w katalogu bieżącym, zakończenie z kodem 22.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+if [ $# -lt 3 ];
+then echo "Za mało"
+exit 11;
+elif [ $# -eq 3 ];
+then ls ~ > $2
+exit 55;
+else
+find . -maxdepth 3 -type d | wc -l
+exit 22;
+fi
+echo "KONIEC SKRYPTU"
+chmod 777 skrypt
+./skrypt 1 2
+SKRYPT GŁÓWNY
+Za mało
+--------------------------------------------------------------------------------------------------------------
+                                        ZAD.3
+Utwórz skrypt, który przy uruchomieniu pobiera parametry.
+-Po uruchomieniu skrypt wczytuje tekst - nazwę pliku i sprawdza czy ten plik istnieje
+w katalogu bieżącym. Jeżeli istnieje – to wyświetlane są nazwy plików o rozmiarze
+większym od 150B
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+read a
+echo "a="$a
+if [ -e "./$a" ]; then
+find . -size +150
+fi
+echo "KONIEC SKRYPTU"
+chmod 777 skrypt
+./skrypt 2
+SKRYPT GŁÓWNY
+2
+a=2
+KONIEC SKRYPTU
+------------------------------------------------------------------------------------------------------------------------
+                                        ZAD.4
+Utwórz skrypt, który wczytuje parametry i sprawdza czy wartość pierwszego parametru się
+powtarza wśród pozostałych, i podlicza – ile razy się powtarza.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+ile=-1
+for x in $@;
+do
+if [ $x -eq $1 ]; then
+ile=$[$ile+1]
+fi
+done
+echo $ile
+echo "KONIEC SKRYPTU"
+chmod 777 skrypt
+./skrypt 1 1 1 1 1 1
+SKRYPT GŁÓWNY
+5
+KONIEC SKRYPTU
+----------------------------------------------------------------------------------------------------------------------
+                                        ZAD.5
+Utwórz skrypt, który po uruchomieniu wczytuje wyraz i sprawdza czy wczytana wartość
+jest równa nazwie uruchomionego skryptu. Wynik – stosowny komunikat.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+read a
+if  [ $a = $0 ]; then
+echo "TAK"
+else
+echo "NIE"
+fi
+echo "KONIEC SKRYPTU"
+exit 0
+chmod 777 skrypt
+./skrypt
+SKRYPT GŁÓWNY
+./skrypt
+TAK
+KONIEC SKRYPTU
+---------------------------------------------------------------------------------------------------------------------
+                                        ZAD.6
+Utwórz skrypt, który przy uruchomieniu pobiera pewną ilość parametrów. Wyświetla ich
+ilość.
+-Jeżeli parametrów jest więcej niż 3 – wyświetla pierwszy i trzeci parametr. Potem
+sprawdza czy są one sobie równe (te parametry).
+-Jeżeli ilość parametrów nie większa od 3 – stosowny komunikat oraz zakończenie
+skryptu z kodem 17.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+echo "ILOŚĆ PARAMETRÓW" $#
+if [ $# -gt 3 ]; then
+echo "PIERWSZY" $1
+echo "TRZECI" $3
+if [ $1 -eq $3 ]; then
+echo "Są równe"
+else
+echo "Nie są równe"
+fi
+else
+echo "Za mało parametrów"
+exit 17
+fi
+exit 0
+chmod 777 skrypt
+./skrypt 12 15 12 0 5
+SKRYPT GŁÓWNY
+ILOŚĆ PARAMETRÓW 5
+PIERWSZY 12
+TRZECI 12
+Są równe
+------------------------------------------------------------------------------------------------------------------
+                                        ZAD.7
+Utwórz skrypt, który pobiera pewna ilość parametrów. Dalsze działanie skryptu zależy od
+ilości i wartości parametrów:
+-jeżeli ilość parametrów jest większa od 4 - zakończenie skryptu z kodem 25
+-jeżeli jest jeden parametr i jest on równy "drzewo" - skrypt pokazuje strukturę
+katalogu bieżącego w postaci drzewa
+-jeżeli jest jeden parametr i jest on równy "zwykle" - skrypt wyświetla nazwy plików
+zwykłych z katalogu bieżącego
+-w pozostałych przypadkach (dla ilości parametrów <=4) - skrypt wyświetla numer
+swojego procesu i kończy działanie z kodem 123.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+if [ $# -gt 4 ]; then
+exit 25
+elif [ $# -eq 1 ] && [ $1 = "drzewo" ]; then
+tree
+elif [ $# -eq 1 ] && [ $1 = "zwykle" ]; then
+find . -type f
+else
+echo $$
+exit 123
+fi
+exit 0
+chmod 777 skrypt
+./skrypt 1
+SKRYPT GŁÓWNY
+19493
+--------------------------------------------------------------------------------------------------------------------
+                                        ZAD.8
+Utwórz skrypt, który:
+- wyświetla nazwę katalogu domowego użytkownika
+- podaje - ilu użytkowników jest w tej chwili zalogowanych.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+echo $HOME
+echo ZALOGOWANI:
+who | wc -l
+exit 0
+chmod 777 skrypt
+./skrypt
+SKRYPT GŁÓWNY
+/home/domena/s164419
+ZALOGOWANI:
+1
+----------------------------------------------------------------------------------------------------------------------
+                                        ZAD.9
+Utwórz skrypt, który:
+- pobiera pewną ilość parametrów
+- jeżeli pierwszy parametr jest równy "dwa" to skrypt wyświetla dzisiejszą datę
+- jeżeli ilość parametrów jest równa 2 to skrypt sprawdza czy w bieżącym katalogu
+jest plik zwykły o nazwie jak drugi parametr.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+if [ $1 = "dwa" ]; then
+date
+fi
+if [ $# -eq 2 ]; then
+if [ -f ./$2 ]; then
+echo "Istnieje"
+else
+echo "Nie istnieje"
+fi
+fi
+exit 0
+chmod 777 skrypt
+./skrypt dwa 2
+SKRYPT GŁÓWNY
+pią, 5 maj 2023, 18:50:25 CEST
+Istnieje
+---------------------------------------------------------------------------------------------------------------------
+                                        ZAD.10
+Do powyższego skryptu dodaj opcję
+ jeżeli drugi parametr jest równy "tworz" - to skrypt wczytuje słowo - które będzie
+nazwą pliku - do którego skrypt dopisze swój PID - nr procesu.
+
+nano skrypt
+#!/bin/bash
+echo "SKRYPT GŁÓWNY"
+if [ $1 = "dwa" ]; then
+date
+fi
+if [ $# -eq 2 ]; then
+if [ -f ./$2 ]; then
+echo "Istnieje"
+else
+echo "Nie istnieje"
+fi
+fi
+if [ $2 = "tworz" ]; then
+read a
+echo $$ > $a
+fi
+exit 0
+chmod 777 skrypt
+./skrypt dwa tworz
+SKRYPT GŁÓWNY
+pią, 5 maj 2023, 18:57:05 CEST
+Nie istnieje
+abc
+
+Lab_10 <<<<<======================================================================================
+                 ZAD 1
+Napisz i uruchom skrypt, wykorzystaj wartości
+parametrów podane przy uruchomieniu - dwa pierwsze
+- nazwy podkatalogów, które trzeba utworzyć w
+katalogu domowym, trzeci - nazwa pliku, do którego
+trzeba zapisać inf. o uruchomionych procesach.
+
+#!/bin/bash
+echo skrypt
+echo Wczytano: $*
+echo katalogi do utworzenia: $1, $2
+cd ~
+mkdir -p $1 $2
+ps > $3
+
+                  ZAD 2
+Napisz i uruchom skrypt, po uruchomieniu wczyta nazwę
+pliku, który należy wyszukać w bieżącym katalogu,
+jeżeli go brak wyświetl komunikat, jeżeli jest -
+wyświetlić jego zawartość.
+
+#!/bin/bash
+echo skrypt
+echo -n Podaj nazwe pliku:
+read plik
+echo Podana nazwa to: $plik
+if  find . -name $plik
+then
+echo JEST - jego zawartosc:
+cat $plik
+else  echo BRAK
+fi
+
+                 ZAD 3
+Napisz i uruchom skrypt, który wczyta frazę.
+Następnie wyszuka w plikach zawartych w katalogu,
+nazwę którego również należy wczytać.
+
+#!/bin/bash
+echo skrypt
+echo Katalog biezacy= $(pwd)
+echo Podaj nazwę katalogu do przeszukania
+echo -ze ścieżką od katalogu domowego:
+read kat
+echo Podana nazwa to: $kat
+cd ~/$kat
+echo Padaj szukaną frazę:
+read fraza
+grep "$fraza" *
+
+                 ZAD 4
+Napisz i uruchom skrypt, który policzyć, ile jest
+uruchomionych procesów, ile jest podkatalogów w
+podanym katalogu w podanym (do jakiego w głąb)
+zakresie poziomów
+
+#!/bin/bash
+echo skrypt
+echo W tej chwili jest uruchomionych \
+$(ps -A | wc -1) procesów
+echo Podaj katalog do przeszukania:
+read Skat
+echo Podaj do jakiego poziomu przeszukujemy:
+read poziom
+echo Wynik przeszukiwania - katalog zawiera |
+$(find $kat -maxdepth $poziom -type d |wc -l) podkatalogow
+
+                 ZAD 5
+Napisz i uruchom skrypt w którym będzie możliwość
+wybrania jednej z kilku możliwych opcji -
+opcje: a,b,c,d lub 1,2,3 itp., w zależności od
+wybranej opcji skrypt będzie wykonywał stosowne
+działania - polecenia shella, np. – wariant a,b,c,d –
+odpowiednio: uruchomić tree, pwd, ls oraz ps,
+komunikat „Opcja d”, dla pozostałych
+przypadków – komunikat „INNA opcja”.
+
+#!/bin/bash
+echo skrypt
+echo Są cztery opcje - a,b,c,d
+echo Wybierz jedną z nich:
+read zm
+case "$zm" in
+a) tree;;
+b) pwd;;
+c) ls; ps;;
+d) echo Opcja d;;
+*) echo INNA opcja;;
+esac
+
+                 ZAD 6
+Napisz i uruchom skrypt, przy uruchomieniu podaj
+dwa parametry - PID procesu oraz nazwę użytkownika;
+skrypt ma sprawdzić czy proces o danym PID jest
+uruchomiony, a także - jakie procesy uruchomił
+dany użytkownik.
+
+#!/bin/bash
+echo Podano:
+echo PID= $1
+echo login= $2
+echo sprawdzanie czy proces z podanym PID \ jest uruchomiony
+ps -A grep "$1"
+if ps -A | grep "$1"
+then echo tak
+fi
+echo procesy użytkownika $2:
+ps -U $2
+
+                   ZAD 7
+Napisz i uruchom skrypt, który wyszukuje zwykłe
+pliki w katalogu, którego nazwa jest wczytywana
+po uruchomieniu, podlicza, ile ich jest, sprawdza
+które z nich zawierają wiersze z wyrażeniem "for i".
+
+#!/bin/bash
+echo Działa skrypt skr111
+echo skrypt wczytuje nazwe katalogu
+echo wyszukuje w nim zwykłe pliki,
+echo podlicza ile ich jest
+echo wyszukuje nazwy tych, które
+echo zawierają frazę "for i"
+ilepl=0
+read -p "Wpisz ścieżkę z katalogiem do przeszukania:" k
+if [ -e $k ]
+        then
+                for i in $k/*
+                        do
+                                if [ -f "$i" ]; then echo $i; ilePl=$[$ilePl+1]; fi
+                        done
+                echo plików zwykłych jest: $ilePl
+                grep "for i" $k/*
+        else
+                echo brak ktakiego katalogu
+fi
+
+                 ZAD 8
+Przy uruchomieniu skryptu podajemy 2 parametry.
+Pierwszy parametr ustala, która z opcji skryptu ma
+być wykonana - jeżeli pierwszy parametr jest
+równy:
+• 1 – to skrypt podlicza – ile jest uruchomionych
+procesów w ogóle, ile danego użytkownika –
+którego login będzie podane jako drugi
+parametr;
+• 2 – to skrypt wywołuje funkcję „pokaz”, która
+przeszukuje katalog domowy i sprawdza czy w
+nim jest plik o nazwie podanej jako drugi
+parametr skryptu;
+• 3 – to skrypt tworzy plik w bieżącym katalogu o
+nazwie podanej jako drugi parametr i zapisuje
+do niego informację – jakie pliki zawiera
+bieżący katalog.
+• Jeżeli ilość parametrów będzie mniejsza lub
+większa od 2 – komunikat o błędzie.
+
+#!/bin/bash
+pokaz()
+{
+echo Funkcja pokaz
+if find $HOME -name $1
+then echo JEST
+else echo NIE MA
+fi
+}
+echo skrypt
+if [ $# -ne 2]
+then echo Za mało parametrów
+elif [ $1 -eq 1 ]
+then ps -A | wc -l; ps -u $2
+elif [ $1 -eq 2]
+then
+echo Wywolanie funkcji
+pokaz $2
+elif [ $1 -eq 3 ]
+then find . -type f > $2
+fi

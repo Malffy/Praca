@@ -1,0 +1,42 @@
+Ćwiczenia - https://github.com/zmitom/SO
+Logowanie do PuTTY:
+orfi.uwm.edu.pl 22 - > Open
+Login: s164418
+Linux. Komendy i polecenia. Wydanie VI
+
+Definicje Linuxowych komend:
+1. `passwd` - pozwala użytkownikowi zmienić swoje hasło
+2. `man [polecenie]` - wyświetla manualną stronę dla danego polecenia, zawierającą szczegółowe informacje i opcje
+3. `who` - wyświetla listę zalogowanych użytkowników
+4. `whoami` - wyświetla nazwę użytkownika aktualnie zalogowanego w systemie
+5. `ls` - wyświetla listę plików i folderów w bieżącym katalogu
+6. `pwd` - wyświetla pełną ścieżkę bieżącego katalogu
+7. `tree` - wyświetla strukturę katalogów i podkatalogów w formie drzewa
+8. `ls -l` - wyświetla szczegółowe informacje o plikach i folderach, takie jak prawa dostępu, właściciel, grupa, rozmiar itp.
+9. `ls /` - wyświetla listę plików i folderów w głównym katalogu systemu
+10. `cd` - umożliwia przejście do innego katalogu
+11. `mkdir` - tworzy nowy katalog
+12. `rmdir` - usuwa pusty katalog
+13. `rm` - usuwa plik lub folder
+14. `exit` - zamyka terminal lub okno powłoki systemowej
+
+Oznaczenia katalogów:
+1. Bieżący - oznacza bieżący katalog i jest oznaczony kropką (.)
+2. Nadrzędny - oznacza katalog nadrzędny i jest oznaczony dwiema kropkami (..)
+3. Główny - oznacza główny katalog systemowy i jest oznaczony ukośnikiem (/)
+4. Domowy - oznacza katalog domowy użytkownika i jest oznaczony tyldą (~)
+
+Symbole:
+1. "-" - oznacza plik
+2. "d" - oznacza folder
+3. "c" - oznacza urządzenie znakowe
+4. "b" - oznacza urządzenie blokowe
+5. "l" - oznacza dowiązanie symboliczne
+
+Wykonanie zadania:
+1. Aby utworzyć katalog o nazwie "Dane", należy użyć komendy `mkdir Dane`.
+2. Następnie należy przejść do utworzonego katalogu, używając komendy `cd Dane`.
+3. Aby przejść do katalogu domowego, należy użyć komendy `cd ~`.
+4. Aby sprawdzić elementy znajdujące się w katalogu głównym, należy użyć komendy `ls /`.
+
+Made by ChatGPT

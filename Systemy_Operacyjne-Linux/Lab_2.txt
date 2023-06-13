@@ -1,0 +1,142 @@
+Zad.1
+Pierwszy sposób:
+mkdir st_2023
+cd st_2023
+mkdir Dane
+mkdir Teksty
+mkdir Programy
+cd Teksty
+mkdir Listy
+mkdir Podania
+cd ..
+cd Programy
+mkdir C
+mkdir Shell
+cd Shell
+mkdir Skrypty
+
+Drugi sposób:
+mkdir st_2023
+mkdir st_2023/Dane
+mkdir st_2023/Teksty
+mkdir st_2023/Programy
+mkdir st_2023/Teksty/Listy
+mkdir st_2023/Teksty/Podania
+mkdir st_2023/Programy/C
+mkdir st_2023/Programy/Shell
+mkdir st_2023/Programy/Shell/Skrypty
+
+Trzeci sposób:
+mkdir -p st_2023/{Dane,Teksty/{Listy,Podania},Programy/{C,Shell/Skrypty}}
+
+Zapamiętaj:
+Do nadawania uprawnień na etapie tworzenia katalogu wykorzystujemy parametr m, a do tworzenia
+całych struktur parametr p.(mkdir -m 755 nazwa_katalogu)
+
+Zad.2
+cd st_2023/Teksty
+nano Zestawienie.txt
+Zad.2.a
+cd st_2023/Programy/Shell/Skrypty
+cp ~/st_2023/Teksty/Zestawienie.txt spis23.txt
+Użyty został względny rodzaj ścieżki.
+Zad.2.b
+cd st_2023/Programy/Shell/Skrypty
+cat spis23.txt
+
+ZAPAMIĘTAJ!!!
+---------------------------------------------------------------------------------------------------------------
+W systemie Linux istnieją dwa rodzaje ścieżek: ścieżki bezwzględne i ścieżki względne.
+
+1.Ścieżki bezwzględne: są to ścieżki, które zaczynają się od katalogu głównego `/` i wskazują
+ na pełną lokalizację pliku lub katalogu w systemie plików. Ścieżki bezwzględne są stałe i niezależne
+ od bieżącego katalogu, więc można je używać zawsze w celu odwołania się do tego samego pliku lub katalogu
+ niezależnie od katalogu, w którym znajduje się użytkownik.
+
+Przykłady ścieżek bezwzględnych: `/home/user/Documents`, `/usr/local/bin`, `/etc/passwd`
+
+2.Ścieżki względne: są to ścieżki, które zaczynają się od katalogu bieżącego i wskazują na lokalizację 
+ pliku lub katalogu w odniesieniu do katalogu, w którym znajduje się użytkownik. Ścieżki względne są elastyczne
+ i zależne od bieżącego katalogu, więc można je używać, aby odwoływać się do plików lub katalogów w 
+ odniesieniu do aktualnego katalogu.
+
+Przykłady ścieżek względnych: `Documents`, `../Pictures`, `./Desktop`
+---------------------------------------------------------------------------------------------------------------
+
+Zad.3
+cd ~/st_2023/Teksty/Podania
+ln -s ~/st_2023/Dane Odsylacz_Dane
+
+ZAPAMIĘTAJ!!!
+---------------------------------------------------------------------------------------------------------------
+LINKI (DOWIĄZANIA)- Twarde i symboliczne.
+Dowiązanie twarde tworzy nową nazwę dla zasobu, zapisując ją w nowej lokalizacji (nie kasując poprzedniej),
+a sam link nie odwołuje się do pliku samego w sobie, ale tylko do jego zawartości.
+np. ln plik.txt link/link_do_plik.txt
+gdzie ln to polecenie uruchamiające tworzenie dowiązania, plik.txt to nazwa zasobu, do którego tworzymy dowiązanie,
+a link_do_plik.txt to nazwa dowiązania.
+Od teraz ten nowy plik zawiera te same dane co plik źródłowy, a my utworzyliśmy sobie nową nazwę do zasobu.
+Jeśli usuniemy plik źródłowy, czyli plik.txt, to ten nowy plik, czyli link_do_plik.txt pozostanie na dysku
+wraz z zawartością.
+
+Dowiązanie symboliczne działa tak jak skrót pliku w Windows.
+Utwórzmy teraz dowiązanie symboliczne do pliku o nazwie plik2.txt. Możemy to zrobić np. tak:
+ln -s plik2.txt kat/nowy_plik2.txt
+Kiedy wyświetlimy zawartość katalogu, w którym zapisaliśmy dowiązanie miękkie, to zobaczymy
+na jaki plik wskakuje nam link:
+lrwxrwxrwx 1 damian damian 9 Feb 24 12:23 nowy_plik2.txt -> plik2.txt
+---------------------------------------------------------------------------------------------------------------
+
+Zad.4
+cd ~/st_2023/Teksty/Podania
+ln -s ~/st_2023/Programy/Shell/Skrypty Odsylacz_Skrypty
+
+Zad.5
+cd ~/st_2023/Teksty/Listy
+ln -s ~/st_2023/Teksty/Zestawienie.txt DoZestawienia
+
+Zad.6
+mv ~/st_2023/Programy/Shell/Skrypty/spis23.txt ~/st_2023/Dane
+rm -r ~/st_2023/Programy
+
+Zad.7
+ZAPAMIĘTAJ!!!
+---------------------------------------------------------------------------------------------------------------
+u-user g-group o-other r-read, w-write, x-execute
+   u   g   o
+- rwx rwx rwx
+  421 421 421
+---------------------------------------------------------------------------------------------------------------
+Zad.7.a
+cd st_2023/Teksty
+chmod 700 Listy
+Zad.7.b
+cd /~/st_2023/Teksty
+chmod 644 Zestawienie.txt
+Zad.7.c
+cd st_2023/Dane
+chmod 741 spis23.txt
+
+Zad.8
+cd ~/st_2023/Dane 
+nano Zapis.txt
+Odczyt informacji(ls): Tak
+Odczyt zawartości(cat): Tak
+Zmiana praw dostępu: Tak
+Kopiowanie: Tak
+Usuwanie: Tak
+Przenoszenie: Tak
+Edytowanie: Tak
+Uruchamianie plików spejalnych: Nie
+
+Zad.9.a
+W podkatalogu Dane możemy wykonać wszystkie podane operacje.
+(usunięcie,zmiana nazwy, zmiana praw dostępu, odczyt danych o katalogu)
+Zad.9.b
+W podkatalogu Dane możemy wykonać wszystkie podane operacje na jego zawartości.
+(skopiowanie pliku do katalogu, usunięcie pliku z katalogu, skopiowanie pliku z katalogu)
+
+Zad.10
+Gdy ustawiamy domyślne uprawnienia dla nowo utworzonych plków wykorzystując komende umask
+podajemy wartości uprawnień, których mieć nie chcemy.
+umask 117 (rw-rw----)

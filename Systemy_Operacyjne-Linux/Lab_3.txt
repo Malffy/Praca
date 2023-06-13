@@ -1,0 +1,56 @@
+Szybkie nowe informacje wstępne do zapamiętania:
+
+Filtry stosowane w poleceniach:
+* - zastępuje dowolną ilość znaków, np. cp *.txt/Dane
+? - zastępuje dokładnie jeden znak, np. cp ???.txt/Dane
+[] - jeden ze znaków z listy NA TEJ POZYCJI
+Przykład COMBO: ls ??[a-k,p,t]*
+
+Każdy zasób w Linuxie ma swojego właściciela.
+Można zmienić właściciela zasobu za pomocą polecenia:
+chown [pocje] nazwa_właściciela nazwa_zasobu.
+
+Zad.1
+mkdir Przepisy
+mkdir -p Notatki/{Kopie}
+cd Notatki
+nano Zapiski.txt
+
+Zad.2
+cd Przepisy
+ln -s ~/Notatki/Zapiski.txt AdZapisek
+
+Zad.3
+chmod 744 Notatki
+cd Notatki
+chmod 764 Zapiski.txt
+
+Zad.4
+umask 0027
+
+Zad.5
+nano Dane.txt
+mkdir Proba1
+ls -l
+drwxr-x--- 2 s164418 domain users 4096 04-27 19:07 Proba1
+-rw-r----- 1 s164418 domain users    6 04-27 19:11 Dane.txt
+
+Zad.6
+ls -i Notatki
+13239176 Kopie  13239181 Zapiski.txt
+
+Zad.7
+1.Otwarcie katalogu nadrzędnego i odczytanie jego zawartości.
+2.Znalezienie katalogu "Dane" wśród zawartości katalogu nadrzędnego.
+3.Otwarcie katalogu "Dane" i odczytanie jego zawartości.
+4.Znalezienie pliku "dane1" wśród zawartości katalogu "Dane".
+5.Otwarcie pliku "dane1" i odczytanie jego zawartości.
+W każdym z tych kroków system musi również sprawdzić czy ma prawa dostępu do otwarcia/odczytania pliku.
+
+
+
+
+
+
+
+

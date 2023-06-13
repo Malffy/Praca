@@ -1,0 +1,488 @@
+Zmienne powłokowe:
+$HOME - katalog domowy
+$PWD - katalog w którym jesteśmy
+$PATH - ścieżka do plików wykonywalnych
+$SHELL - nazwa powłoki
+$USER - nazwa użytkownika
+$HOSTNAME - nazwa komputera
+$RANDOM - losowa liczba
+$UID - id użytkownika
+$GID - id grupy
+$OSTYPE - typ systemu operacyjnego
+$MACHTYPE - typ procesora
+$SECONDS - liczba sekund od uruchomienia powłoki
+$LINENO - numer linijki w skrypcie
+$PS1 - nazwa powłoki
+
+set - pokazuje zmienne powłoki
+env - wyświetlenie zmiennych środowiskowych
+echo $zmienna > zmiennaPlik.txt - zapisanie zmiennej do pliku txt
+a=5 <= zdefiniowana zmienna
+$a <= odowłanie się do zmiennej
+unset a <= usunięcie zmiennej
+$(( )) <= pozwala na dokonywanie operacji arytmetycznych na zmiennych jako liczbach, np:
+a=1
+b=$(($a+5))
+echo b=$b
+b=6
+
+Liczby: <= działa TYLKO na liczbach, więc jeśli porównujesz $PWD z $HOME używaj zwykłego =
+1) liczbal -lt liczba2 <= prawda, kiedy liczbal mniejsza
+2) liczbal -le liczba2 <= prawda, kiedy liczbal mniejsza lub równa
+3) liczbal -gt liczba2 <= prawda, l<iedy liczbal wieksza
+4) liczbal -ge liczba2 <= prawda, kiedy liczbal wieksza lub równa
+5) liczbal -eq liczba2 <= prawda, kiedy równe
+6) liczba1 -ne liczb 2 <= prawda, kiedy nierówne
+
+Konstrukcja instrukcji warunkwej IF : (ważne aby był odstęp od [])
+if [ warunek ] ; then <jeśli tak>; else <jeśli nie>; fi
+Teksty:
+np. if [ala = ola]
+-n tekst <= prawda, kiedy niezerowy
+-z tekst <=prawda, kiedy zerowy
+
+Przykłady z if:
+
+1.Sprawdź czy w katalogu domowym znajduję się plik zwykły "dane.txt".
+if [find * -f -name dane.txt] ; then echo jest ; else nie ma ; fi
+
+2.Sprawdź czy a jest większe od b
+if [ $a -gt %b] ; then wieksze ; else mniejsze ; fi
+
+3.Sprawdź czy a jest równe 4
+if [ $a -eq 4 ] ; then echo "a jest równe 4" ; fi
+
+4.Użycie if oraz &&:
+if [ warunek ]; then polecenie; fi
+if [ warunek ] && [ warunek ]; then polecenie; fi
+if [ warunek ] && [ warunek ]; then polecenie; elif [ warunek ] && [ warunek ]; then polecenie ;else polecenie; fi
+Przykłady użycia:
+if [ -e plik.txt ]; then echo "Plik istnieje"; fi
+if [ -e plik.txt ] && [ -r plik.txt ]; then echo "Plik istnieje i jest do odczytu"; fi
+if [ -e plik.txt ] && [ -r plik.txt ]; then echo "Plik istnieje i jest do odczytu"; elif [ -e plik.txt ] && [ -w plik.txt ]
+then echo "Plik istnieje i jest do zapisu"; else echo "Plik nie istnieje"; fi
+
+Konstukcja pętli FOR:
+for((i=początek; warunekKońca; inkrementacja)); do akcja; done
+
+Przykłady z for:
+
+1. Wypisz liczby od 1 do 10
+for i in {1..10} ; do echo $i ; done
+
+2. Policz, ile zwykłych plików jest w bieżącym katalogu:
+ile=0
+for a in *; do if [ -f „$a” ]; then ile=$(($ile+1)); fi; done
+echo $ile
+
+3. Wyświetl zawartość zwykłych plików:
+for a in *; do if [ -f $a ]; then cat $a; fi; done
+
+4. Policz (oddzielnie), ile plików i ile katalogów jest w bieżącym katalogu:
+for a in *; do if [ -f "$a" ]; then ilePL=$[$ilePL+1]; elif [ -d "$a" ]; then ileKAT=$(($ileKAT+1)); fi; done
+echo $ileKAT
+echo $ilePL
+
+Konstrukcja pętli WHILE:
+while [ warunek ]; do instrukcje ; done
+
+Przykłady z while:
+1.Wypisz liczby od 10 do 35:
+i=10
+while [ $i -lt 36 ]; do echo $i ((i++)); done
+
+
+Konstrukcja pętli UNTIL:
+until [ warunek ]; do #instrukcje dla pętli; done
+
+Przykłady z until:
+1.Wypisz liczby  od 35 do 10:
+i=35
+until [ $i -eq 9 ] ;do echo $i ((i++)); done
+
+Konstrukcja wielokrotnego wyboru CASE:
+case <zmienna> in
+"wzorzec1") polecenie1;;
+"wzorzec2") polecenie2;;
+"wzorzec3") polecenie3;;
+*) polecenie_domyślne;;
+esac
+
+Przykłady z case:
+
+1.zmienna="pies i kot"
+case "$zmienna" in
+pies) echo to pies;;
+"pies i kot") echo to pies i kot;;
+*) echo to pewnie kosmita;;
+esac
+
+2.case "$zm" in
+"to tekst") echo tekst; pwd;;  <-- wypisz tekst, następnie podaj katalog bieżący. pojedyńczy średnik
+1 | 2 | 3) echo liczba 1-3; ls;;    jest używany, gdy musimy wykonać kilka poleceń
+owca) echo baran;;
+[tT][aA][kK]) echo TAK to nasza zmienna;;
+*) echo nie ma takiej opcji;;
+esac
+
+
+Polecenie passwd:
+passwd [opcje] [nazwa użytkownika]
+passwd ważne opcje:
+-l - zablokowanie konta
+-u - odblokowanie konta
+-d - usunięcie hasła
+-f - wymuszenie zmiany hasła przy następnym logowaniu
+-S - wyświetlenie informacji o koncie
+przykłady użycia:
+passwd -l jan
+passwd -u jan
+passwd -d jan
+passwd -f jan
+passwd -S jan
+
+
+Polecenie group:
+groupadd [opcje] nazwa
+groupdel nazwa
+groupmod [opcje] nazwa
+groups [nazwa użytkownika]
+groups ważne opcje:
+-g - ustawienie ID grupy
+-r - grupa systemowa
+-n - nazwa grupy
+-d - ścieżka do katalogu domowego grupy
+-A - lista administratorów grupy
+-P - lista użytkowników grupy
+-gid - ID grupy
+przykład użycia:
+groupadd -g 1000 grupa
+groupdel grupa
+groupmod -g 1001 grupa
+groups jan
+groups -A grupa
+groups -P grupa
+groups -g 1000
+
+
+Polecenie cut:
+cut [opcje] [plik]
+cut ważne opcje:
+-b - wycięcie znaków
+-c - wycięcie bajtów
+-d - separator
+-f - wybór pól
+-s - pominięcie linii bez separatora
+--complement - wycięcie wszystkich pól oprócz wybranych
+--output-delimiter - separator wyjściowy
+przykład użycia:
+cut -d: -f1 /etc/passwd
+cut -d: -f1,3 /etc/passwd
+cut -d: -f1,3 --output-delimiter=" " /etc/passwd
+Przykład Zadanie:
+Z polecania ls -l wytnij zaznaczone elementy (prawa dostępu, rozmiar i nazwa):
+(-rw-r--r--) 1 userxyz domain users (180) mar 18 16:32 (tekst5.04)
+(-rw-r--r--) 1 userxyz domain users (73) mar 11 17:16 (TRESC22)
+(-rw-r--r--) 1 userxyz domain users (31) mar 10 13:54 (WSZYSTKO)
+ls -l | tr -s " " | cut -d " " -f1,6,9
+Wystłuamczenie jak wybrac zaznaczone ementy: -f1 to prawa dostępu,
+potem po przecinku dajemy numer wyrazu w wierszu.
+
+Polecenie tr:
+tr [opcje] [znaki_wejściowe] [znaki_wyjściowe]
+tr Ważne opcje:
+-c - komplement
+-d - usuwanie znaków
+-s - usuwanie powtarzających się znaków
+przykład użycia:
+tr -d " " < plik.txt
+tr -s " " < plik.txt
+tr -d " " < plik.txt | tr -s "\n"
+
+Polecenie eval:
+eval służy do wykonania polecenia zapisanego w zmiennej lub pliku
+przykład użycia:
+eval echo "Witaj"
+eval echo "Witaj" > plik.txt
+eval echo "Witaj" >> plik.txt
+eval echo "Witaj" > plik.txt 2> plik2.txt
+eval echo "Witaj" > plik.txt 2>&1
+eval echo "Witaj" > plik.txt 2>&1 1> plik2.txt
+eval echo "Witaj" > plik.txt 2>&1 1> plik2.txt 0> plik3.txt
+użycie ze zmienną:
+eval $zmienna
+eval $zmienna > plik.txt
+1.Przypisywanie wartości jednej zmiennej do drugiej za pomocą eval:
+zm1=10
+x=zm1
+eval y=’$’$x <== przypisanie wartości zmiennej zm1 do zmiennej y
+echo $y
+
+
+Polecenie exit n:
+exit n - zakończenie skryptu z kodem n
+0 - sukces
+1-125 – kody błędów
+126 – plik nie był wykonywalny
+127 – polecenie nie było znalezione
+128-255 – pojawił się sygnał o numerze ...
+przykład użycia:
+exit 0
+exit 1
+exit 2
+
+Polecenie echo:
+echo [opcje] [tekst]
+echo ważne opcje:
+-e - interpretacja znaków specjalnych
+-n - brak przejścia do nowej linii
+przykład użycia:
+echo "Witaj"
+echo -e "Witaj\n"
+echo -n "Witaj"
+
+Polecenia break i continue:
+break - przerwanie pętli
+continue - przejście do kolejnej iteracji pętli
+przykład użycia:
+for i in {1..10}; do if [ $i -eq 5 ]; then break; fi; echo $i; done
+for i in {1..10}; do if [ $i -eq 5 ]; then continue; fi;  echo $i; done
+
+Polecenie ps:
+ps [opcje]
+ps ważne opcje:
+-a - wszystkie procesy
+-u - informacje o użytkowniku
+-x - procesy bez terminala
+-h - pomoc
+-f - pełne informacje
+-j - informacje o grupie procesów
+-m - informacje o pamięci
+-r - procesy w czasie rzeczywistym
+-s - procesy w czasie użytkownika
+-A - wszystkie procesy
+-C - procesy o podanej nazwie
+-G - procesy o podanym GID
+przykład użycia:
+ps -aux
+ps -aux | grep root - wyświetlenie linii zawierających słowo root
+ps -aux | grep root | grep -v grep - wykluczenie linii zawierających słowo grep
+
+Rozwinięcia parametryczne:
+
+${parametr:-wartość_domyślna}
+np.: ${a:-plikZERO}
+jeżeli zmienna a nie ma wartości to będzie przyjęta „plikZERO”;
+
+${#parametr} - podaje długość parametru, tzn. jakiej długości łańcuch tekstowy jest zawarty w zmiennej;
+
+${parametr%słowo*} -usuwa z łańcucha od końca najmniejszą część parametru do słowa
+włącznie z nim, resztę przypisuje, (czyli od prawej – do pierwszego wystąpienia słowa w łańcuchu łącznie z nim)
+Przykład:
+Zmienna SCIEZKA ma przypisany jako wartość taki łańcuch:/home/jan23/Pliki/projekt1/Pliki/Dane,
+wyrażenie: ${SCIEZKA%Pliki*}
+da wynik: /home/jan23/Pliki/projekt1/
+
+${parametr%%słowo*} -usuwa z łańcucha od końca najdłuższą część parametru do słowa włącznie
+z nim, resztę przypisuje, (czyli od prawej – do ostatniego wystąpienia słowa w łańcuchu łącznie z nim)
+Przykład:
+Zmienna SCIEZKA ma przypisany jako wartość taki łańcuch: /home/jan23/Pliki/projekt1/Pliki/Dane,
+wyrażenie: ${SCIEZKA%%Pliki*}
+da wynik: /home/jan23/
+
+${parametr#*słowo} -usuwa z łańcucha od początku najmniejszą część parametru do słowa włącznie
+z nim, resztę przypisuje,
+Przykład:
+zmienna SCIEZKA ma przypisany jako wartość taki łańcuch: /home/jan23/Pliki/projekt1/Pliki/Dane,
+wyrażenie: ${SCIEZKA#*Pliki}
+da wynik: /projekt1/Pliki/Dane
+
+${parametr##*słowo} -usuwa z łańcucha od początku najdłuższą część parametru do słowa włącznie
+z nim, resztę przypisuje,
+Przykład:
+zmienna SCIEZKA ma przypisany jako wartość taki łańcuch:
+/home/jan23/Pliki/projekt1/Pliki/Dane,
+wyrażenie: ${SCIEZKA##*Pliki}
+da wynik: Dane
+
+
+Skrypty:
+Skrypty to wykonywalny plik tekstowy zawierający polecenia shella i ewentualnie
+konstrukcje strukturalne, zaczynający się od wiersza #!/bin/bash.
+
+Tworzenie skryptu:
+Tworzymy plik nano z #!/bin/bash w pierwszej linijce, następnie piszemy jego zawartość i kończymy go exit 0.
+Potem zapisujemy plik, zmieniamy jego prawa dostępu (chmod 777 nazwa_skryptu),aby go uruchomić wpisujemy:
+- ./nazwa_skryptu
+- $HOME/nazwa_skryptu - jeżeli jest w katalogu domowym
+- $PWD/nazwa_skrpytu
+
+Przykładowy skrypt:
+#!/bin/bash
+echo START
+echo Zawartość katalogu:
+ls
+echo KONIEC
+
+
+Funkcje:
+
+#!/bin/bash <= skrypt głowny, przed nim definujemy funkcje
+fun1 () {
+echo DZIALA FUN1
+}
+echo „START”
+fun1 <= wywołanie funkcji
+echo „KONIEC”
+exit 0
+
+Wynik:
+SKRYPT glowny
+DZIALA FUN1
+GLOWNY – koniec
+
+
+Debugowanie skryptów:
+
+Przykład skryptu:
+#!/bin/bash
+echo START
+echo ala
+ls-l
+tree-d
+echo a=$a # zmienna a nie ma wartości
+echo KONIEC
+
+Zwykłe wykonanie skryptu: ./skr09
+START
+ala
+./skr09: line 4: ls-l: command not found
+./skr09: line 5: tree-d: command not found
+a= <== ma być wartość a
+KONIEC
+
+Można ustawiać opcje powłoki w poleceniu (wierszu) #!/bin/bash -opcja :
+• -e powoduje zamknięcie powłoki, gdy działanie prostego polecenia zakończy się
+niepowodzeniem: #!/bin/bash -e
+• -u – nounset – komunikat błędu i zamknięcie powłoki, gdy skrypt próbuje użyć
+niezdefiniowanej zmiennej: #!/bin/bash -u
+• -x – włączenie debuggera: #!/bin/bash -x
+
+LUB
+
+Opcje wiersza poleceń:
+Sh - do putty, set - pod skrypt głowny
+sh –n <skrypt> set -o noexec <= Szuka błędów składni nie wykonując poleceń
+                         set –n
+sh –v <skrypt> set -v verbose <= Powtarza polecenia przed ich wykonaniem
+                        set –v
+sh –x <skrypt> set -o xtrace <= Powtarza polecenia po ich wykonaniu w wierszu poleceń
+                        set –x
+                        set -o nounset <= Podaje komunikat błędu gdy wykonywana jest niezdefiniowana zmienna
+                        set –u
+
+Po zdefiniowaniu zmiennej a:
++ echo START
+START
++ echo ala
+ala
++ ls-l
+./bbb: line 4: ls-l: command not found
++ tree-d
+./bbb: line 5: tree-d: command not found
++ a=33
++ echo a=33 <== w tym miejscu polecenie wygląda tak : echo a=$a, debugger podstawia zamiast zmiennej wartość
+a=33
++ echo KONIEC
+KONIEC
+
+Przykład użycia opcji powłoki w skrypcie i efekt:
+#!/bin/bash
+2 set -x
+3 echo dziala skr09
+4 echo ala
+5 ls-l
+6 tree-d
+7 echo $a
+Można włączyć znaczniki opcji polecenia set za pomocą opcji: -0 <=włącza, +0 <=wyłącza.
+Przy wstępnym sprawdzaniu wystarczą opcje wiersza poleceń.
+Przy dokładniejszym sprawdzaniu skryptu warto umieszczać opcję xtrace wewnątrz skryptu – włączać
+ją dla szczególnych fragmentów.
+
+Zmienne Specjalne:
+$# - liczba argumentów
+$0 - nazwa skryptu
+$1 - pierwszy argument
+$2 - drugi argument
+$@ - wszystkie argumenty
+$? - kod powrotu ostatniego polecenia
+$$ - PID procesu
+$! - PID ostatniego procesu w tle
+
+Ćwiczenie:
+
+Treść skryptu:
+#!/bin/bash
+echo skrypt805
+echo $0
+echo $*
+echo $1 $2 $4
+echo $#
+echo $$
+echo $?
+echo „parametry:” $@
+echo koniec
+
+Treść skryptu wpisz do pliku skrpt805, nadaj prawa dostępu i uruchom skrypt za pomocą komendy:
+./skrypt805 Ala kot pies 123 887 45abc danie
+
+Wyniki analizy:
+Całe polecenie traktowane jest jako wiersz.
+$0 – wyraz o numerze 0 w tym wierszu - nazwa skryptu.
+Następne wartości – są traktowane jako
+parametry wejściowe – NIE MA DEKLAROWANIA I LIMITU.
+$* - wszystkie parametry
+$1, $2, … - parametry o takich numerach (numeracja od 1).
+$# - ilość parametrów.
+$$ - numer procesu, w ramach którego wykonuje się skrypt.
+$@ - Lista parametrów pozycyjnych przekazana do programu powłoki w postaci pojedynczego
+         łańcucha znaków – bez separatorów: spacji, tabulatorów i enterów.
+$? - tzw. kod powrotu – wartość zwracana do SO – mówiąca o tym jak się wykonał program – liczba 1-Bajtowa.
+Dobrze = 0 , źle – inna wartość.
+W skrypcie $? - dotyczy poprzedniego polecenia: echo $$.
+
+Polecenie read:
+-pozwala na wczytanie danych przy wykonaniu
+Przykład:
+echo $1 $2 $4
+echo $#
+echo $$
+read a # wczytanie wartości do zmiennej a
+echo a=$a
+read -p „Wpisz liczbe:” b # parametr p -
+# tekst komentarza
+echo b=$b
+echo $?
+echo $%
+echo koniec
+exit 221
+
+
+Skrypty a zmienne powłoki i środowiska (informacja).
+Skrypt normalnie uruchamia się w pod powłoce – czyli zmienne powłoki uruchamiającej są w nim niedostępne.
+CWICZENIE
+1. Utwórz skrypt
+#!/bin/bash
+echo zmienna powloki uruchamiajacej a= $a
+echo zmienna środowiskowa b=$b
+2. pamiętaj o nadaniu odpowiednich praw dostępu
+3. Przed uruchomieniem skryptu zdefiniować zmienne a=12 i b= „Ala i kot”;
+4. Ze zmiennej b robimy zmienną środowiskową: export b
+5. Uruchom skrypt.
+6. W skrypcie dopisz wiersze:
+echo "zmienna a= $a"
+echo "zmienna b= $b"
+7. Uruchom skrypt.
+Prawidłowy wynik
+zmienna a=
+zmienna b= Ala i kot

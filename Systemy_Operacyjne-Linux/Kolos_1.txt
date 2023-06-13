@@ -1,0 +1,235 @@
+Znaki globalne w systemie Linux:
+* – zero lub więcej znaków
+? – jeden znak
+[abcde] – jeden z wymienionych znaków
+[a-e] – jeden znak z podanego przedziału
+!abc – dowolny znak oprócz wymienionych
+[!a-e] – dowolny znak nienależący do podanego zakresu
+{ala,kot} – dowolny z wymienionych wyrazów
+
+Symbole ścieżek:
+. - aktualny katalog
+.. - katalog wyżej
+~ - katalog domowy
+/ - katalog główny
+
+find - służy do wyszukiwania zasobów (różnych plików) według różnych kryteriów. Wynikiem polecenia find jest tekst.
+      (find <gdzie> <kryteria>)
+	-name <nazwa> <= według nazwy
+	-iname <nazwa> <= według nazwy(można z ?,*)
+	-inum <numer> <= według pliku z podanym numerem i-węzła
+	-maxdepth <liczba> <= wyszukuje tylko w podkatalogach o takiej głębokości
+	-mindepth <liczba> <= wyszukuje tylko w katalogach o takiej głębokości
+	UWAGA: Typy plików dla find (f-zwykły,d-katalog,l-dowiązanie symboliczne,b-urz.blokowe,c-urz.znakowe,s-socket(gniazdo),p-pipe).
+	-type <typ> <= wyszukuje tylko pliki o takim typie
+	-perm <uprawnienia> <= wyszukuje tylko pliki o takich uprawnieniach
+	-user <nazwa użytkownika> <= wyszukuje tylko pliki należące do takiego użytkownika
+	-group <nazwa grupy> <= wyszukuje tylko pliki należące do takiej grupy
+	-size <liczba> <= wyszukuje tylko pliki o takim rozmiarze
+	UWAGA: a(pliki do których był dostęp), c(pliki które były zmieniane), m(zawartośc których była modyfikowana).
+	-mtime <liczba> <= wyszukuje tylko pliki zmodyfikowane w ciągu ostatnich <liczba> dni np find <nazwa katalogu> -type f -mtime -5 - wyświetla pliki zmodyfikowane w ciągu ostatnich 5 dni
+	-atime <liczba> <= wyszukuje tylko pliki dostępne w ciągu ostatnich <liczba> dni np find <nazwa katalogu> -type f -atime -5 - wyświetla pliki dostępne w  ciągu ostatnich 5 dni
+	-ctime <liczba> <= wyszukuje tylko pliki zmienione w ciągu ostatnich <liczba> dni np find <nazwa katalogu> -type f -ctime -5 - wyświetla pliki zmienione w ciągu ostatnich 5 dni
+	-mmin <liczba> <= wyszukuje tylko pliki zmodyfikowane w ciągu ostatnich <liczba> minut np find <nazwa katalogu> -type f -mmin -5 - wyświetla pliki zmodyfikowane w ciągu ostatnich 5 minut
+	-amin <liczba> <= wyszukuje tylko pliki dostępne w ciągu ostatnich <liczba> minut np find <nazwa katalogu> -type f -amin -5 - wyświetla pliki dostępne w ciągu ostatnich 5 minut
+	-cmin <liczba> <= wyszukuje tylko pliki zmienione w ciągu ostatnich <liczba> minut np find <nazwa katalogu> -type f -cmin -5 - wyświetla pliki zmienione w ciągu ostatnich 5 minut
+	UWAGA: -5//mniej niż 5; 5//dokładnie 5; +5//więcej niż 5
+	-exec <polecenie> <= wykonuje polecenie na znalezionych plikach np find <nazwa katalogu> -type f -exec chmod 777 {} \; - zmienia uprawnienia na 777 dla wszystkich znalezionych plików 
+	-newer <nazwa pliku> <= wyszukuje tylko pliki nowsze niż <nazwa pliku>
+	-nouser <= wyszukuje tylko pliki bez właściciela, -nogroup <= wyszukuje tylko pliki bez grupy
+	-empty <= wyszukuje tylko puste pliki (lub -size +0c dla niepustych a -size 0c dla pustych)
+	-delete <= usuwa znalezione pliki
+	-print <= wyświetla znalezione pliki
+
+Przykłady z find:
+1. find . -maxdepth 2 -type f -mtime -2 - komenda na odnalezienie zmodyfikowanych plików
+("."- folder od którego rozpocznie się poszukiwanie, "maxdepth 2"- maksymalna głębokość podkatalogów,
+"type -f"- określa typ plików które mają być znalezione, "mtime -2"- ostatnio modyfikowane 2 dni temu)
+
+2. find ~/ -maxdepth 1 -type d -perm 644 - komenda na odnalezienie folderu z określonymi prawami dostępu
+
+3. find . -name "[a,c-e,w]*" -exec cat {} \; | wc -l
+
+
+grep - służy do przeszukiwania zawartości plików tekstowych  - szuka wierszy,
+           które zawierają tekst opisany za pomocą wzorca(grep <parametry> <wzorzec> <jakie pliki przeszukiwać>)
+	Gdzie:
+	<jakie pliki przeszukiwać> - filtr nazw plików, np. *.txt, grep "ala"*
+	<parametry> - można ustalić, ile i jakie wiersze wyszukujemy, itp.: można wyszukiwać po 10
+	   	        wierszy zawierających wzorzec, tylko nazwy plików z lub bez wzorca itd, np.
+		-b <= podaje pozycję wiersza ze wzorcem w pliku
+		-i <= ignoruje wielkość liter
+		-f <= <nazwa_pliku> wzorce wyszukiwań zawarte są w pliku o podanej nazwie(jeden wiersz jeden wzorzec)
+		-r  <=wyszukuje również w sub katalogach ścieżki
+		-l <= pokazuje nazwy plików, w których znajduje się pasujący wzorzec
+		-n <= pokazuje linię, w której występuje szukany wzorzec
+		-v <= pokazuje linie, które nie zawierają wzorca
+		-F <= traktuje szukany wzorzec, jako escapowany string
+		-E <= traktuje szukany wzorzec, jako rozszerzone wyrażenie regularne
+		-e <= informuje, że następny argument, jest wzorcem
+		-c <= zwróci nam liczbę pasujących fraz
+		-x <= zwróci wynik, tylko i wyłącznie, jeżeli pasuje cała linia
+		-m[cyfra] <= przerwie wyszukiwanie, po znalezieniu pierwszych [cyfra] rezultatów
+	<wzorzec> - (zasady budowy wzorca):
+		grep -b "^szukany_tekst" * <= zaczyna się od ^- od początku wiersza
+		grep -b "szukany_tekst$" * <= kończy się na $ - na końcu wiersza (przed ENTEREM)
+	
+Znaki:
+. - dowolny 1 znak
+* - dowolna ilość powtórzeń (od 0) znaku(-ów) przed nią -np. a*,(abc)*
++ - dowolna ilość powtórzeń (od 1) znaku(-ów) przed nią -np. a+,(abc)+
+? - 0 lub 1 znak przed nim
+[abc] - dowolny ze znaków w nawiasach
+[^xyz] - dowolny ze znaków poza wymienionymi
+\ - odbiera specjalne znacznie -np. szukanie "*" - \*, szukanie "\" - \\,itd, np:
+- grep -b "\*$" * <= szukamy znaku „*” na końcu wiersza we wszystkich plikach
+- grep "^#" * <= szukamy znaku „#” na początku wiersza we wszystkich plikach
+| - alternatywa wzorców
+{n} - wyszukiwany element pasuje dokłanie n razy
+{n,} - n i więcej razy
+{n,m} - od n do m razy
+man - wyświetla manualną stronę dla danego polecenia, zawierającą szczegółowe informacje i opcje
+
+ls -l - pokazuje informacje o plikach
+
+ls -i - wyświetla numery i-węzłów
+
+who - wyświetla wszystkich zalogowanych obecnie w systemie użytkowników
+
+mkdir <nazwa> - tworzy katalog żeby od razu dodać uprawnienia wystarczy użyć -m np mkdir 4isi -m g=rwx,o=rx
+
+rmdir - usuwa pusty katalog
+
+rm - usuwa plik lub katalog
+
+mv - przenoszenie plików i katalogów (mv -r <nazwa katalogu> <miejsce docelowe> - przenoszenie katalogów)
+
+cat - wyświetla zawartość pliku
+np. cat /etc/passwd - wyświetli użytkowników
+cat /etc/group - wyświetli grupy
+
+ln <plik> <miejsce docelowe> - tworzy dowiązanie(link) żeby utworzyć symboliczne trzeba dodać -s
+np. ln -s ../Teksty/Zestawienie2017.txt <nazwa_dowiązania>
+
+cp plik cel lub cp źródło cel/nazwa_kopi
+cp plik nowa_nazwa_$zmiena przekopiowanie pliku do nowej nazwy
+
+pwd - pokazuje ścieżke do pliku w którym się znajdujemy
+
+tree - pokazuje drzewo katalogów
+
+head - wyświetla pierwsze 10 linijek pliku
+
+tail - wyświetla ostatnie 10 linijek pliku
+
+wc - licznik, przelicza dołączony tekst i podaje w wyniku, ile w nim jest wierszy(-l), wyrazów(-w) i znaków(-c)
+np. ls -l /dev |wc -l - wypisze liczbę wszystkich wierszy wywołaniych przez funkcje ls -l
+
+history - wyświetla historie użytych komend
+
+chmod 777 nazwa_pliku - ustawia uprawnienia dla podanego pliku
+u-user g-group o-other r-read, w-write, x-execute
+   u   g   o
+- rwx rwx rwx
+  421 421 421
+
+Mechanizm WE/WY - strumienie.
+WE -stdin -in
+WY -stdout -out
+WY błędów -stderr -err.
+Błedy - (w pracy z konsolą) złe polecenia. Na WY błędów - będzie trafiałą reakcja SO, czyli shella.(Komunikaty o błedach)
+
+W danej chwili strumienie są ukierunkowane na konkretne urządzenia.
+Można zmieniać/przekierować strumień.
+
+Przekierowanie:
+WE - z klawiatury na plik "dane123":
+cat < dane123, //gdzie znak ">" przekierowuje.
+WY - z konsoli na plik "dane123":
+ls > dane123 //gdzie znak ">" przekierowuje(i nadpisuje zawartość pliku).
+echo tekst > plik22
+WY błędów - z konsoli na plik "dane123":
+ls -l 2>dane123
+
+Strumienie są traktowane jako pliki specjalne to znaczy, że mają przyporządkowane i-węzły.
+WE - 0
+WY - 1
+WY błędów -2
+
+>> - przekierowanie wyjścia do pliku (np. ls >> plik.txt - wyświetla zawartość katalogu w pliku) można je łączyć np. ls >> cat plik.txt >> elo1 - wyświetla zawartość katalogu w pliku i błędy
+> - przekierowanie wyjścia do pliku (np. ls > plik.txt - wyświetla zawartość katalogu w pliku) można je łączyć np. ls > cat plik.txt > elo1 - wyświetla zawartość katalogu w pliku i błędy
+
+2> przekierowanie informacji o błędach
+1> standardowe wyjście (można pominąć 1)
+
+cat plik.txt >> plik2.txt dodaje do pliku2.txt zawartość plik.txt, > nadpisuje
+
+UWAGA:
+> - nadpisuje zawartość pliku (usuwa to co w nim było i wpisuje nową podaną zawartość).
+>> - dodaje (na koniec pliku) bez usuwania jego zawartości.
+
+| - (pipeline) przekierowanie wyjścia do wejścia (np. ls | grep <szukany tekst> - wyświetla zawartość katalogu w pliku) można je łączyć np. ls | grep <szukany tekst> | grep <szukany tekst> - wyświetla zawartość katalogu w pliku i błędy
+
+Wynik dziłania poprzedzającego polecenia staje się danymi WE dla następnego.
+Składnia: <polecenie> | <polecenie> | <polecenie>
+
+Zmienne powłokowe:
+$HOME - katalog domowy
+$PWD - katalog w którym jesteśmy
+$PATH - ścieżka do plików wykonywalnych
+$SHELL - nazwa powłoki
+$USER - nazwa użytkownika
+$HOSTNAME - nazwa komputera
+$RANDOM - losowa liczba
+$UID - id użytkownika
+$GID - id grupy
+$OSTYPE - typ systemu operacyjnego
+$MACHTYPE - typ procesora
+$SECONDS - liczba sekund od uruchomienia powłoki
+$LINENO - numer linijki w skrypcie
+$PS1 - nazwa powłoki
+
+set - pokazuje zmienne powłoki
+env - wyświetlenie zmiennych środowiskowych
+echo $zmienna > zmiennaPlik.txt - zapisanie zmiennej do pliku txt
+a=5 <= zdefiniowana zmienna
+$a <= odowłanie się do zmiennej
+unset a <= usunięcie zmiennej
+$(( )) <= pozwala na dokonywanie operacji arytmetycznych na zmiennych jako liczbach ,
+np.
+a=1
+b=$(($a+5))
+echo b=$b
+b=6
+
+żeby stworzyć zmienną powłokową wystarczy napisać np. a=4 i aby ją wyświetlić wystarczy napisać echo $a
+żeby utworzyć instrukcję warunkową wystarczy napisać np. if [ $a -eq 4 ] ; then echo "a jest równe 4" ; fi
+żeby utworzyć pętlę wystarczy napisać np. for i in {1..10} ; do echo $i ; done
+
+
+if [ warunek ]; then <jeśli tak> else <jeśli nie> fi - konstrukcja if, ważne aby był odstęp od []
+Teksty:
+np. if [ala = ola]
+-n tekst <= prawda, kiedy niezerowy
+-z tekst <=prawda, kiedy zerowy
+
+Liczby:
+1) liczbal -lt liczba2 <= prawda, kiedy liczbal mniejsza
+2) liczbal -le liczba2 <= prawda, kiedy liczbal mniejsza lub równa
+3) liczbal -gt liczba2 <= prawda, l<iedy liczbal wieksza
+4) liczbal -ge liczba2 <= prawda, kiedy liczbal wieksza lub równa
+5) liczbal -eq liczba2 <= prawda, kiedy równe
+6) liczba1 -ne liczb 2 <= prawda, kiedy nierówne
+
+Pliki:
+-f nazwa <= czy dany plik jest zwykły
+-d nazwa <= czy dany plik jest katalogiem
+-e nazwa <= czy dany plik istnieje
+-r nazwa, -w nazwa, -x nazwa <= czy plik ma dane prawa dostępu
+-s nazwa <= czy plik jest niezerowy
+-g, -u <= dotyczą przekazania praw własności
+-h <= dowiązanie symboliczne
+
+for((i=początek; warunekKońca; inkrementacja)); do akcja done - konstukcja pętli
+
+for a in ~/; do if [ -d "$a" ]; then $((licznik++)); elif [ -f "$a" ];  then cat $a; else echo "nie ma takich plików"; fi; done

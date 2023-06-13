@@ -1,0 +1,137 @@
+1.`echo`: to polecenie wypisuje na standardowe wyjście (zwykle terminal) podane przez użytkownika argumenty
+lub wartości zmiennych środowiskowych. Może być stosowane do wypisywania krótkich informacji lub do 
+przekierowania wyniku do pliku.
+
+2.`head`: to polecenie wyświetla początkowe linie pliku lub wyniku komendy. Domyślnie wyświetla 
+pierwsze 10 linii, ale można to zmienić poprzez opcje.
+
+3.`tail`: to polecenie wyświetla końcowe linie pliku lub wyniku komendy. Domyślnie wyświetla
+ostatnie 10 linii, ale można to zmienić poprzez opcje.
+
+4.`wc`: to polecenie liczy ilość wierszy, wyrazy i znaków w pliku lub w strumieniu danych przekazywanym 
+na standardowe wejście. Może być stosowane do analizy tekstu lub innych plików.
+
+5.`less`: to program umożliwiający przeglądanie zawartości pliku w trybie interaktywnym.
+Pozwala przewijać plik w górę i w dół, wyszukiwać w tekście, zmieniać tryb wyświetlania i wiele innych.
+
+6.`ps`: to polecenie wyświetla listę aktualnie działających procesów na systemie. 
+Domyślnie wyświetla procesy związane z bieżącym terminalem.
+
+7.'find`: to polecenie wyszukuje pliki i katalogi w określonym katalogu i jego podkatalogach.
+Można go stosować do znajdywania plików o określonym rozszerzeniu, nazwie lub innym kryterium.
+
+8.`locate`: to polecenie znajduje pliki i katalogi na podstawie bazy danych systemu, która zawiera 
+informacje o wszystkich plikach na dysku. Działa szybciej niż `find`, ale wymaga regularnej aktualizacji 
+bazy danych.
+
+Mechanizm WE/WY - strumienie.
+WE -stdin -in
+WY -stdout -out
+WY błędów -stderr -err.
+Błedy - (w pracy z konsolą) złe polecenia. Na WY błędów - będzie trafiałą reakcja SO, czyli shella.(Komunikaty o błedach)
+
+W danej chwili strumienie są ukierunkowane na konkretne urządzenia.
+Można zmieniać/przekierować strumień.
+
+Ukierunkowanie strumieni:
+WE - klawiatura
+WY - konsola(ekran,monitor)
+WY błedów - konsola(ekran,monitor)
+
+Przekierowanie:
+WE - z klawiatury na plik "dane123":
+cat < dane123, //gdzie znak ">" przekierowuje.
+WY - z konsoli na plik "dane123":
+ls > dane123 //gdzie znak ">" przekierowuje(i nadpisuje zawartość pliku).
+echo tekst > plik22
+WY błędów - z konsoli na plik "dane123":
+ls -l 2>dane123
+
+Strumienie są traktowane jako pliki specjalne to znaczy, że mają przyporządkowane i-węzły.
+WE - 0
+WY - 1
+WY błędów -2
+
+Ćwiczenie:
+Jak w jednym poleceniu przekierować
+a) WY do jednego pliku, WY błędów do drugiego?
+ls -l >gg 2>bledy (gg,bledy to pliki)
+b) WY i WY błedów do jednego pliku?
+ls -l >gg>2>&1 ("2" oznacza wyjście błędów, a "&1" oznacza wyjście standardowe.)
+
+cat > dane (Tworzy plik tekstowy "dane")
+echo "tekst" - wyświetli "tekst" na ekranie
+echo CZESC > dane
+echo `ls -l` // gdy użyjemy krzywych apostrofów, polecenie wykona się
+echo $HOME => zawartość zmiennej
+echo '$HOME' => tekst
+echo "Zawartość katalogu domowego:"`ls`"a nazwa katalogu domowego=HOME".
+
+Przy pomocy strumieni WY można połączyć kilka plików i zapisać je w jednym:
+Mając pliki: dane1, testy22 i list11 zapisz je do jednego archiwum.
+cat dane1 test22 list11 > archiwum
+
+Łączenie poleceń(pipeline - strumień poleceń)
+Wynik dziłania poprzedzającego polecenia staje się danymi WE dla następnego.
+Składnia: <polecenie> | <polecenie> | <polecenie>
+
+Chcemy policzyć ilość plików i katalogów w katalogu domowym.
+Sposób nr.1:
+ls > plik
+wc plik
+
+Sposób nr.2:
+ls | wc
+
+wc - licznik, przelicza dołączony tekst i podaje w wyniku, ile w nim jest wierszy(-l), wyrazów(-w) i znaków(-c)
+np. ls -l /dev |wc -l - wypisze liczbę wszystkich wierszy wywołaniych przez funkcje ls -l
+
+ps -A | less <= pokazuje uruchomione zadania w SO ze stronicowaniem
+
+find - służy do wyszukiwania zasobów (różnych plików) według różnych kryteriów. Wynikiem polecenia find jest tekst.
+      (find <gdzie> <kryteria>)
+	-name <nazwa> <= według nazwy
+	-iname <nazwa> <= według nazwy(można z ?,*)
+	-inum <numer> <= według pliku z podanym numerem i-węzła
+	-maxdepth <liczba> <= wyszukuje tylko w podkatalogach o takiej głębokości
+	-mindepth <liczba> <= wyszukuje tylko w katalogach o takiej głębokości
+	UWAGA: Typy plików dla find (f-zwykły,d-katalog,l-dowiązanie symboliczne,b-urz.blokowe,c-urz.znakowe,s-socket(gniazdo),p-pipe).
+	-type <typ> <= wyszukuje tylko pliki o takim typie
+	-perm <uprawnienia> <= wyszukuje tylko pliki o takich uprawnieniach
+	-user <nazwa użytkownika> <= wyszukuje tylko pliki należące do takiego użytkownika
+	-group <nazwa grupy> <= wyszukuje tylko pliki należące do takiej grupy
+	-size <liczba> <= wyszukuje tylko pliki o takim rozmiarze
+	UWAGA: a(pliki do których był dostęp), c(pliki które były zmieniane), m(zawartośc których była modyfikowana).
+	-mtime <liczba> <= wyszukuje tylko pliki zmodyfikowane w ciągu ostatnich <liczba> dni np find <nazwa katalogu> -type f -mtime -5 - wyświetla pliki zmodyfikowane w ciągu ostatnich 5 dni
+	-atime <liczba> <= wyszukuje tylko pliki dostępne w ciągu ostatnich <liczba> dni np find <nazwa katalogu> -type f -atime -5 - wyświetla pliki dostępne w  ciągu ostatnich 5 dni
+	-ctime <liczba> <= wyszukuje tylko pliki zmienione w ciągu ostatnich <liczba> dni np find <nazwa katalogu> -type f -ctime -5 - wyświetla pliki zmienione w ciągu ostatnich 5 dni
+	-mmin <liczba> <= wyszukuje tylko pliki zmodyfikowane w ciągu ostatnich <liczba> minut np find <nazwa katalogu> -type f -mmin -5 - wyświetla pliki zmodyfikowane w ciągu ostatnich 5 minut
+	-amin <liczba> <= wyszukuje tylko pliki dostępne w ciągu ostatnich <liczba> minut np find <nazwa katalogu> -type f -amin -5 - wyświetla pliki dostępne w ciągu ostatnich 5 minut
+	-cmin <liczba> <= wyszukuje tylko pliki zmienione w ciągu ostatnich <liczba> minut np find <nazwa katalogu> -type f -cmin -5 - wyświetla pliki zmienione w ciągu ostatnich 5 minut
+	UWAGA: -5//mniej niż 5; 5//dokładnie 5; +5//więcej niż 5
+	-exec <polecenie> <= wykonuje polecenie na znalezionych plikach np find <nazwa katalogu> -type f -exec chmod 777 {} \; - zmienia uprawnienia na 777 dla wszystkich znalezionych plików 
+	-newer <nazwa pliku> <= wyszukuje tylko pliki nowsze niż <nazwa pliku>
+	-nouser <= wyszukuje tylko pliki bez właściciela, -nogroup <= wyszukuje tylko pliki bez grupy
+	-empty to wyszukuje tylko puste pliki
+	-delete to usuwa znalezione pliki
+	-print to wyświetla znalezione pliki
+
+pliki niepuste można wyszukać poleceniem find <nazwa katalogu> -type f -size +0c np find <nazwa katalogu> -type f -size +0c - wyświetla wszystkie pliki niepuste
+pliki puste można wyszukać poleceniem find <nazwa katalogu> -type f -size 0c
+	
+np. find /home/uczen -name *.txt
+
+find . -maxdepth 2 -type f -mtime -2 - komenda na wyświetlenie zmodyfikowanych plików
+("."- folder od którego rozpocznie się poszukiwanie, "maxdepth 2"- maksymalna głębokość podkatalogów,
+"type -f"- określa typ plików które mają być znalezione, "mtime -2"- ostatnio modyfikowane 2 dni temu)
+
+find ~/ -maxdepth 1 -type d -perm 644 - komenda na odnalezienie folderu z określonymi prawami dostępu
+
+
+
+
+
+
+
+
+

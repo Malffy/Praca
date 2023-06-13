@@ -1,0 +1,116 @@
+https://matplotlib.org/stable/plot_types/index - przykłady wykresów matplotlib
+http://wmii.uwm.edu.pl/~piojas/wizdan2022/numpy.html
+http://wmii.uwm.edu.pl/~piojas/wizdan2022/pandas.html
+http://wmii.uwm.edu.pl/~piojas/wizdan2022/matplotlib.html
+
+======= Kolos_A =======
+# Zadanie 1
+# x = np.linspace(1, 20, 20)
+# plt.plot(x, x**2+4*x/np.sin(x), 'r', label='f(x) = x**2+4*x/np.sin(x)')
+# plt.xlabel('x')
+# plt.ylabel('f(x)')
+# plt.xlim(1, 20)
+# plt.title('Wykres funkcji f(x) = f(x) = x**2+4*x/np.sin(x) dla x[1,20]')
+# plt.legend()
+# plt.show()
+
+
+# Zadanie 2
+# plt.subplot(2, 2, 2)
+# x = np.linspace(-2, 2, 40)
+# y = np.tan(x)*np.sin(x)
+# plt.plot(x, y, 'g--', label="tan(x)*sin(x)")
+# plt.xlabel("x")
+# plt.ylabel("wynik funkcji")
+# plt.title("Pierwszy wykres")
+# plt.xlim(-2, 2)
+# plt.legend(loc="lower center")
+
+
+# plt.subplot(2, 2, 3)
+# a = np.linspace(-3, 3, 40)
+# b = np.sin(x) + np.tan(x)
+# plt.plot(a, b, "b", label="sin(x) + tan(x)")
+# plt.xlabel("x")
+# plt.ylabel("wynik funkcji")
+# plt.title("Drugi wykres")
+# plt.legend(loc="upper right")
+# plt.xlim(-3, 3)
+# plt.savefig("imie_nazwisko_zad2.png")
+# plt.show()
+
+
+# Zadanie 3
+# df = pd.read_csv("iris.data", sep=",", decimal=".")
+# a = df[df["class"]=="Iris-versicolor"]
+# sns.set()
+# sns.scatterplot(x=a["petal length"], y=a["petal width"], color="red")
+# plt.title("Wykres punktowy")
+# plt.show()
+
+
+# Zadanie 4
+# df = pd.read_csv("automobile.csv", sep=";", decimal=".")
+# sns.set()
+# plot = sns.barplot(data=df, x='Car model', y='Price', estimator=np.sum)
+# plt.title("Wykres kolumnowy")
+# plt.show()
+
+
+======= Kolos_B =======
+# Zadanie 1
+x = np.linspace(15, 30, 30)
+y = np.tan(x)/(np.sin(x)+x)
+plt.plot(x, y, ":", label="f(x)=tan(x)/(sin(x)+x)")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.xlim(15, 30)
+plt.title("Wykres funkcji f(x)=tan(x)/(sin(x)+x)")
+plt.legend()
+plt.show()
+
+
+# Zadanie 2
+plt.subplot(3, 2, 4)
+x = np.linspace(-4, 4, 50)
+y = 5x**2-3x+2
+plt.plot(x, y, 'r', label="5x^2-3x+2")
+plt.xlabel("x")
+plt.ylabel("wynik funkcji")
+plt.title("Pierwszy wykres")
+plt.xlim(-4, 4)
+plt.legend()
+
+
+plt.subplot(3, 2, 5)
+a = np.linspace(-4, 4, 50)
+print(x)
+b = -2*x**3+5
+print(y)
+plt.plot(a, b, "g.", markersize=12, label="-2x^3+5")
+plt.xlabel("x")
+plt.ylabel("wynik funkcji")
+plt.title("Drugi wykres")
+plt.legend(loc="upper center")
+plt.xlim(-4, 4)
+plt.savefig("imie_nazwisko_zad2.png")
+plt.show()
+
+
+# Zadanie 3
+df = pd.read_csv("automobile.csv", sep=";", decimal=".")
+nowa_ramka_danych = pd.DataFrame(df.head(100))
+grupa = nowa_ramka_danych.groupby(["Body-style"])
+wykres = grupa.size()
+print(wykres)
+wykres.plot(kind="pie", subplots=True, autopct="%d%%", fontsize=14, title="Rozkład pojazdów ze względu na body-style",label="Samochody pogrupowane według Body-style")
+plt.show()
+
+
+# Zadanie 4
+df = pd.read_csv("iris.data", sep=",", decimal=".")
+a = df[df["class"]!="Iris-versicolor"]
+sns.set()
+sns.scatterplot(x=a["sepal length"], y=a["sepal width"], color="red")
+plt.title("Wykres punktowy")
+plt.show()
